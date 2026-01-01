@@ -20,6 +20,7 @@ pipeline {
                     ls -la
                 '''
             }
+        }
         stage('test') {
             agent {
                 docker {
