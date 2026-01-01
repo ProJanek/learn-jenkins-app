@@ -58,14 +58,14 @@ pipeline {
                     # & will start server in background
                     node_modules/.bin/serve -s build &
                     sleep 10
-                    npx prlaywright test
+                    npx playwright test
                 '''
             }
         }
     }
     post {
         always {
-            junit 'test-results/junit.xml'
+            junit 'junit-results/junit.xml'
         }
     }
 }
