@@ -3,6 +3,7 @@ pipeline {
     
     stages {
         // This is a comment
+        /*
         stage('build') {
             agent {
                 docker {
@@ -11,9 +12,6 @@ pipeline {
                 }
             }
             steps {
-                /*
-                multi line comment
-                */
                 sh '''
                     echo 'Building...'
                     ls -la
@@ -25,6 +23,7 @@ pipeline {
                 '''
             }
         }
+        */
         stage('test') {
             agent {
                 docker {
@@ -34,6 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    # comment for shell
                     echo 'Testing...'
                     test -f ./build/index.html
                     echo $?
