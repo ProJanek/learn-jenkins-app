@@ -46,12 +46,18 @@ pipeline {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.57.0-noble'
                     reuseNode true
+                    // args '-u root:root' -> running container as root is not a good idea (changes mage by root can be not available for standard user)
                 }
             }
             steps {
                 sh '''
+                    # install serve as local depedency (not global with -g flag)
+                    # npm install -g serve
+                    # serve -s build
                     npm install serve
-                    node_modules/.bin/serve -s build
+                    # & will start server in background
+                    node_modules/.bin/serve -s build &
+                    sleep 10
                     npx prlaywright test
                 '''
             }
