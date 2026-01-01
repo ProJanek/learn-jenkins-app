@@ -2,6 +2,7 @@ pipeline {
     agent any
     
     stages {
+        // This is a comment
         stage('build') {
             agent {
                 docker {
@@ -10,6 +11,9 @@ pipeline {
                 }
             }
             steps {
+                /*
+                multi line comment
+                */
                 sh '''
                     echo 'Building...'
                     ls -la
