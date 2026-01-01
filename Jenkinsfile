@@ -44,7 +44,7 @@ pipeline {
         stage('e2e test') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.57.0-noble'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                     // args '-u root:root' -> running container as root is not a good idea (changes mage by root can be not available for standard user)
                 }
