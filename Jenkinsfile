@@ -29,11 +29,12 @@ pipeline {
                 }
             }
             steps {
-                sh """
+                sh '''
                     echo 'Testing...'
                     test -f ./build/index.html
                     echo $?
-                """
+                    npm test
+                '''
             }
         }
     }
