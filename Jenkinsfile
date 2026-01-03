@@ -1,5 +1,9 @@
 pipeline {
     agent any
+
+    environment {
+        NETLIFY_SITE_ID = 'f04a436a-2725-4ddc-9c1c-33df3983e29a'
+    }
     
     stages {
         stage('build') {
@@ -42,6 +46,7 @@ pipeline {
                     }
                 }
                 stage('e2e test') {
+                    
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -76,6 +81,7 @@ pipeline {
                 sh '''
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
+                    echo 'Deploying to production. Site ID: $NETLIFY_SITE_ID'
                 '''
             }
         }
