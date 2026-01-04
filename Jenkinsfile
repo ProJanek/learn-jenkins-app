@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = 'f04a436a-2725-4ddc-9c1c-33df3983e29a'
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token') 
+        REACT_APP_VERSION = '1.2.3'
     }
     
     stages {
@@ -135,24 +136,6 @@ pipeline {
         }
 
         stage('prod deploy') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    npm install netlify-cli
-                    node_modules/.bin/netlify --version
-                    echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod --no-build
-                '''
-            }
-        }
-
-        stage('prod e2e test') {
             
             agent {
                 docker {
@@ -165,7 +148,11 @@ pipeline {
             }
             steps {
                 sh '''
-
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod --no-build
                     npx playwright test  --reporter=html
                 '''
             }
