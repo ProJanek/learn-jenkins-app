@@ -100,8 +100,10 @@ pipeline {
         }
 
         stage('prod approval') {
-            timeout(time: 1, unit: 'MINUTES') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
                 input 'ready for prod deployment?'
+                }
             }
         }
 
