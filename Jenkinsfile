@@ -8,24 +8,7 @@ pipeline {
     }
     
     stages {
-        stage('AWS') {
-            agent {
-                docker {
-                    image 'amazon/aws-cli'
-                    args  "--entrypoint=''"
-                }
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
-                        aws --version
-                        echo "Hello from S3!" >> message.txt
-                        aws s3 cp message.txt s3://elasticbeanstalk-us-east-1-611538927186/message.txt
-                    '''
-                }
-
-            }
-        }
+        
         stage('build') {
             agent {
                 docker {
@@ -43,6 +26,28 @@ pipeline {
                     npm run build
                     ls -la
                 '''
+            }
+        }
+
+        stage('AWS') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                    args  "--entrypoint=''"
+                }
+            }
+            environment {
+                AWS_S3_BUCKET = 'elasticbeanstalk-us-east-1-611538927186'
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws --version
+                        aws s3 sync build s3://$AWS_S3_BUCKET
+                    '''
+                }
+
             }
         }
 
