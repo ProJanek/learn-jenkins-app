@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REACT_APP_VERSION = "1.0.$BUILD_ID"
-        AWS_DEAFAULT_REGION = "us-east-1"
+        AWS_DEFAULT_REGION = "us-east-1"
     }
     
     stages {
@@ -20,6 +20,7 @@ pipeline {
                     sh '''
                         aws --version
                         aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
+                        aws ecs update-service --cluster learnjenkins-cluster --service learnjenkins-taskdefinition-prod-service-aevg29sc --task-definition learnjenkins-taskdefinition-prod:2
                     '''
                 }
             }
