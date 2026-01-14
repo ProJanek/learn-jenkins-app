@@ -23,6 +23,7 @@ pipeline {
                 sh '''
                     yum update -y
                     yum install -y docker
+                    service docker start
                     docker build -t my-jenkins-app .
                 '''
             }
